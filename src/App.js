@@ -4,15 +4,40 @@ import { Container, Content, Row, columns } from "./styles";
 import { useState } from "react";
 
 const App = () => {
+  const [firstNumber, setFirstNumber] = useState('0');
   const [currentNumber, setCurrentNumber] = useState('0');
+  const [operation, setOperation] = useState('+');
 
   const handleOnClear = () => {
     setCurrentNumber('0');
+    setFirstNumber('0');
   }
 
   const handleAddNumber = (num) => {
-    setCurrentNumber((prev) => `${num}${prev === '0' ? '' : prev}`);
+    setCurrentNumber((prev) => `${prev == '0' ? '' : prev}${num}`);
   };
+
+  const handleSumNumbers = () => {
+    if(firstNumber == '0'){
+      setFirstNumber(String(currentNumber));
+      setCurrentNumber('0');
+    } else {
+      const sum = Number(firstNumber) + Number(currentNumber);
+      setCurrentNumber(String(sum));
+    }
+  }
+
+  const handleEquals = () => {
+    if(firstNumber != '0' && operation != '' && currentNumber != '0'){
+      switch(operation) {
+        case '+':
+          handleSumNumbers();
+          break;
+          default: break;
+      }
+    } 
+  }
+
   return (
     <Container>
       <Content>
@@ -91,7 +116,7 @@ const App = () => {
           <Button
             label="+"
             onClick={() => {
-              handleAddNumber('+');
+              handleSumNumbers('+');
             }}
           />
         </Row>
@@ -117,7 +142,7 @@ const App = () => {
           <Button
             label="="
             onClick={() => {
-              handleAddNumber('=');
+              handleEquals();
             }}
           />
         </Row>
